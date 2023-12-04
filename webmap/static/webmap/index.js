@@ -1,7 +1,7 @@
 var map = L.map('map').setView([24.42, 43.58], 5);
 
-
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+// https://tile.openstreetmap.org/{z}/{x}/{y}.png
+L.tileLayer('http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
@@ -26,24 +26,25 @@ function addMarker(e){
     })
     .then(jsonData => {
         // Handle the response data
-        console.log(jsonData);
+        // console.log(jsonData);
         for (var key in jsonData) {
             if (jsonData.hasOwnProperty(key)) {
                 var entry = jsonData[key];
-        
+            
+                var greenIcon = new L.Icon({
+                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                  });
 
-                var marker = L.marker([entry.lat, entry.lon]).addTo(recMarkersLayer);
-                    // { icon: L.divIcon({ 
-                    //     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-                    //     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                    //     iconSize: [25, 41],
-                    //     iconAnchor: [12, 41],
-                    //     popupAnchor: [1, -34],
-                    //     shadowSize: [41, 41]
-                    // }) }
+                var marker = L.marker([entry.lat, entry.lon],  { icon: greenIcon }).addTo(recMarkersLayer);
+                    
         
                 // You can customize the marker popup content here if needed
-                marker.bindPopup('<b>Info</b><br><b>Lat: </b>' 
+                marker.bindPopup('<b>Lat: </b>' 
                 + entry.lat + '<b><br>Lon: </b>' + entry.lon
                 +'<b><br>PVOUT_csi: </b>' + entry.PVOUT_csi
                 +'<b><br>DNI: </b>' + entry.DNI
